@@ -64,10 +64,22 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-        <div class="row">
-            <div class="container">
-                <%
+        </nav>                    
+        <div class="container bg-white mb-5">
+            <div class="row">
+                <div class="col-md-7 p-5" style="margin-top: 2.5rem">
+                    <h1 class="head-landing">Advance your skills</h1>
+                    <h2 class="head-landing">with <span>Smart Learn</span>.</h2>
+                    <a class="btn btn-primary button-its px-5 button-rounded mt-4" style="font-size: 1.25rem" href="register.jsp">Start Now</a>
+                </div>
+                <div class="col-md-5">
+                    <a href='https://www.freepik.com/free-vector/man-shows-gesture-great-idea_10541562.htm'><img style="width: 30rem" src="./assets/landing-page-gambar.jpg" alt="alt"/></a>
+                </div>
+            </div>
+        </div>  
+        
+        <div class="container mb-5">
+            <%
                     // show errors if any exist
                     String errMsg = (String) session.getAttribute("error");
                     if (errMsg != null) {
@@ -97,15 +109,45 @@
                     session.removeAttribute("success");
                 }
                 %>
-                <div class="col-md-12">
-                    
+            <h2 class="mb-2 course-landing">Featured Courses</h2>
+            <div class="row pt-3">
+                <div class="col-md-3">
+                    <div class="card card-custom text-center">
+                        <img class="card-img-top" src="https://picsum.photos/seed/anjayani/350/200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-custom text-center">
+                        <img class="card-img-top" src="https://picsum.photos/seed/aheheheh/350/200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-custom text-center">
+                        <img class="card-img-top" src="https://picsum.photos/seed/pwebwkwkwk/350/200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <h1>Hello Nada!</h1>
-        
-        
+                    
+        <footer>
+            <hr>
+            <div class="container">
+                <p>Smart Learn</p>
+            </div>             
+        </footer>
         <%-- BOOTSTRAP JAVASCRIPT--%>
         <script src="./js/app.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
