@@ -63,7 +63,9 @@ public class RegisterController extends HttpServlet {
 
                 int i = st.executeUpdate("INSERT INTO users(user_name, email, phone, address, password_hash) VALUES('"+ name +"', '"+ email +"', '"+ phone +"', '"+ address +"', '"+  password_hash +"')");
 
-                System.out.println("User is registered successfully!");
+                request.getSession().setAttribute("success", "Successfully registered. Please login now.");
+                response.sendRedirect("login.jsp");
+                return;
             }
         }
         catch(Exception e)

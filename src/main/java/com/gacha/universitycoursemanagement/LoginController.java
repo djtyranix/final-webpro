@@ -50,7 +50,7 @@ public class LoginController extends HttpServlet {
 
                 if(isPasswordCorrect) // Logged in
                 {
-                    request.getSession().setAttribute("isLoggedIn", "1");
+                    request.getSession().setAttribute("success", "Successfully logged in.");
                     request.getSession().setAttribute("user_id", curPass.getString("user_name"));
                     response.sendRedirect("home.jsp");
                     return;

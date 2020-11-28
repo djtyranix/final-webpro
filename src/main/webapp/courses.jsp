@@ -72,6 +72,36 @@
         </nav>
         
         <div class="container mt-md-5">
+            <%
+                    // show errors if any exist
+                    String errMsg = (String) session.getAttribute("error");
+                    if (errMsg != null) {
+                %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error: <%= errMsg%>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <%
+                    session.removeAttribute("error");
+                }
+                %>
+                <%
+                    // show errors if any exist
+                    String successMsg = (String) session.getAttribute("success");
+                    if (successMsg != null) {
+                %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= successMsg%>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <%
+                    session.removeAttribute("success");
+                }
+                %>
             <h1 class="text-center">List of Courses</h1>
         </div>
         

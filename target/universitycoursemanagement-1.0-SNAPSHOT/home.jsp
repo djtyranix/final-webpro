@@ -73,6 +73,36 @@
             </div>
         </nav>
         <div Class="container">
+            <%
+                    // show errors if any exist
+                    String errMsg = (String) session.getAttribute("error");
+                    if (errMsg != null) {
+                %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error: <%= errMsg%>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <%
+                    session.removeAttribute("error");
+                }
+                %>
+                <%
+                    // show errors if any exist
+                    String successMsg = (String) session.getAttribute("success");
+                    if (successMsg != null) {
+                %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= successMsg%>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <%
+                    session.removeAttribute("success");
+                }
+                %>
             <div Class="row">
                 <div Class="col-md-9">
                     <div Class="card card-custom">

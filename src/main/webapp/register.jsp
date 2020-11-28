@@ -87,6 +87,21 @@
                     session.removeAttribute("error");
                 }
                 %>
+                <%
+                    // show errors if any exist
+                    String successMsg = (String) session.getAttribute("success");
+                    if (successMsg != null) {
+                %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= successMsg%>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <%
+                    session.removeAttribute("success");
+                }
+                %>
                 <div class="col-md-12">
                     <div class="card card-shadow">
                         <div class="card-header bg-its text-its">
@@ -112,7 +127,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone nunmber" required maxlength="13">
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required maxlength="13">
                                 </div>
                                 <div class="form-group">
                                     <label for="address">Address</label>

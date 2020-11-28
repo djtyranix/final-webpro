@@ -31,6 +31,7 @@ public class LogoutController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getSession().invalidate();
+        request.getSession().setAttribute("success", "Successfully logged out.");
         response.sendRedirect("login.jsp");
         return;
     }
