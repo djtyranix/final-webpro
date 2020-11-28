@@ -42,10 +42,10 @@
                             if (user_id != null) {
                         %>
                         <li class="nav-item">
-                            <a class="nav-link" href="index.jsp">Home</a>
+                            <a class="nav-link" href="HomeController">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="courses.jsp">Course</a>
+                            <a class="nav-link active" href="CourseController">Course</a>
                         </li>
                         <% } %>
                     </ul>

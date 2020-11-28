@@ -39,7 +39,7 @@ public class LoginController extends HttpServlet {
             Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/universitycoursemanagement" ,"universitycoursemanagement", "university");
 
-            PreparedStatement checkPass = conn.prepareStatement("SELECT email, user_name, password_hash FROM users WHERE email=?");
+            PreparedStatement checkPass = conn.prepareStatement("SELECT * FROM users WHERE email=?");
             checkPass.setString(1, email);
             ResultSet curPass = checkPass.executeQuery();
             if(curPass.next())
@@ -52,6 +52,7 @@ public class LoginController extends HttpServlet {
                 {
                     request.getSession().setAttribute("success", "Successfully logged in.");
                     request.getSession().setAttribute("user_id", curPass.getString("user_name"));
+                    request.getSession().setAttribute("id_user", curPass.getInt("id"));
                     request.getRequestDispatcher("HomeController").forward(request, response);
                     return;
                 }

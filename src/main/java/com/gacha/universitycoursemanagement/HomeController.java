@@ -31,10 +31,11 @@ public class HomeController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
                     try
                     {   
                         ArrayList<Courses> courseResult = new ArrayList<>();
+                        ArrayList<Attendance> attnResult = new ArrayList<>();
 
                         Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection
                         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/universitycoursemanagement" ,"universitycoursemanagement", "university");
@@ -50,9 +51,32 @@ public class HomeController extends HttpServlet {
                             courseResult.add(courses);
                             count++;
                         }
+                        courseList.close();
+                        
+                        String user_id = (String) request.getSession().getAttribute("id_user").toString();
+                        Connection conn2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/universitycoursemanagement" ,"universitycoursemanagement", "university");
+                        PreparedStatement course2 = conn2.prepareStatement("SELECT courses.course_id, course_name, course_desc, isFinished FROM courses JOIN attendances ON courses.course_id = attendances.course_id WHERE user_id = ?");
+                        //SELECT courses.course_id, course_name, course_desc, isFinished FROM courses JOIN attendances ON courses.course_id = attendances.course_id
+                        course2.setString(1, user_id);
+                        courseList = course2.executeQuery();
+                        
+                        int count2 = 0;
+//                        System.out.println(course2);
+                        
+                        while(courseList.next())
+                        {
+                            Attendance attn = new Attendance(courseList.getInt("course_id"), courseList.getString("course_name"), courseList.getString("course_desc"), courseList.getBoolean("isFinished"));
+                            attnResult.add(attn);
+                            count2++;
+                        }
+
+//                        System.out.println(count);
+//                        System.out.println(count2);
                        
                         request.getSession().setAttribute("countCourse", count);
-                        request.getSession().setAttribute("courseList", courseResult);
+                        request.getSession().setAttribute("countAttn", count2);
+                        request.getSession().setAttribute("attnList", attnResult);
+                        //request.getSession().setAttribute("courseList", courseResult);
                         response.sendRedirect("home.jsp");
                         return;
                     }

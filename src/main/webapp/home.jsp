@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.gacha.universitycoursemanagement.Attendance" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,6 +24,13 @@
         <%
             String user_id = (String) session.getAttribute("user_id");
             String count = (String) session.getAttribute("countCourse").toString();
+            String count2 = (String) session.getAttribute("countAttn").toString();
+            
+            ArrayList<Attendance> attn = new ArrayList<Attendance>();
+            
+            attn = (ArrayList<Attendance>) session.getAttribute("attnList");
+            Attendance attnObj = new Attendance();
+            
             if (user_id == null) { response.sendRedirect("login.jsp"); }
         %>
         <nav class="navbar navbar-expand-lg navbar-dark bg-its mb-md-5">
@@ -37,7 +46,7 @@
                             if (user_id != null) {
                         %>
                         <li class="nav-item">
-                            <a class="nav-link active" href="index.jsp">Home</a>
+                            <a class="nav-link active" href="HomeController">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="CourseController">Course</a>
@@ -116,7 +125,7 @@
                                 <div class="col-md-3">
                                     <div class="vertical-line container">
                                         <div style="text-align: center; line-height: 0;">
-                                            <h2>12</h2>
+                                            <h2><%= count2%></h2>
                                         </div>
                                         <div style="text-align: center; line-height: 0;">
                                             <p class="card-text">Enrolled Course</p>
@@ -141,83 +150,52 @@
                     </div>
                     <div class="container mt-md-3">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="card card-custom">
+                            <%
+                                for(int i = 0; i < attn.size(); i++)
+                                {
+                                    attnObj = attn.get(i);
+                                    if(attnObj.getIsFinished() == true)
+                                    { continue ;}
+                                    else
+                                    {
+                            %>
+                            <div class="col-md-4 d-flex align-items-stretch">
+                                <div class="card card-custom mb-md-5">
                                     <img class="card-img-top" src="https://picsum.photos/seed/nada/350/200" alt="Card image cap">
                                     <div class="card-body">
-                                        <h4 class="card-title">Materi 1</h4>
+                                        <h4 class="card-title"><%= attnObj.getCourseName()%></h4>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="card card-custom">
-                                    <img class="card-img-top" src="https://picsum.photos/seed/mike/350/200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Materi 2</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card card-custom">
-                                    <img class="card-img-top" src="https://picsum.photos/seed/gatau/350/200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Materi 3</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-md-4">
-                            <div class="col-md-4">
-                                <div class="card card-custom">
-                                    <img class="card-img-top" src="https://picsum.photos/seed/siapa/350/200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Materi 4</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card card-custom">
-                                    <img class="card-img-top" src="https://picsum.photos/seed/lagi/350/200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Materi 5</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card card-custom">
-                                    <img class="card-img-top" src="https://picsum.photos/seed/dah/350/200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Materi 6</h4>
-                                    </div>
-                                </div>
-                            </div>
+                            <% }} %>
                         </div>
                     </div>
                 </div>
                 <div Class="col-md-3">
                     <div class="card card-custom">
                         <div class="card-header">
-                            Courses
+                            Enrolled Courses
                         </div>
                         <div class="card-body">
+                            <% 
+                                if(attn.size() != 0)
+                                {
+                                    for(int i = 0; i < attn.size(); i++)
+                                    {
+                                        attnObj = attn.get(i);
+                            %>
                             <div class="courseListMenu mb-2">
-                                Course 1
+                                - <%= attnObj.getCourseName() %>
                             </div>
+                            <% 
+                                }}
+                                else
+                                {
+                            %>
                             <div class="courseListMenu mb-2">
-                                Course 2
+                                No class enrolled.
                             </div>
-                            <div class="courseListMenu mb-2">
-                                Course 3
-                            </div>
-                            <div class="courseListMenu mb-2">
-                                Course 4
-                            </div>
-                            <div class="courseListMenu mb-2">
-                                Course 5
-                            </div>
-                            <div style="float: right;">
-                                View All
-                            </div>
+                            <% } %>
                         </div>
                     </div>
                     <div class="card card-custom mt-md-3">
@@ -226,15 +204,31 @@
                             Finished Courses
                         </div>
                         <div class="card-body">
+                            <% 
+                                if(attn.size() != 0)
+                                   {
+                                    for(int i = 0; i < attn.size(); i++)
+                                    {
+                                        attnObj = attn.get(i);
+                                        if(attnObj.getIsFinished() == true)
+                                        {
+                            %>
                             <div class="courseListMenu mb-2">
-                                Course 1
+                                - <%= attnObj.getCourseName() %>
                             </div>
+                            <%
+                                }
+                                else
+                                {
+                                    continue;
+                                }}}
+                                else
+                                {
+                            %>
                             <div class="courseListMenu mb-2">
-                                Course 2
+                                No class completed.
                             </div>
-                            <div class="courseListMenu mb-2">
-                                Course 3
-                            </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
