@@ -7,7 +7,6 @@ package com.gacha.universitycoursemanagement;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +18,8 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author micha
  */
-@WebServlet(name = "RegisterController", urlPatterns = {"/RegisterController"})
-public class RegisterController extends HttpServlet {
+@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
+public class LoginController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,38 +36,42 @@ public class RegisterController extends HttpServlet {
         {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-            String name = request.getParameter("name");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
-            String password_hash;
-
             Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/universitycoursemanagement?" + "user=universitycoursemanagement&password=university");
-            PreparedStatement checkEmail = conn.prepareStatement("SELECT email FROM users WHERE email=?");
-            checkEmail.setString(1, email);
-            ResultSet emailCheck = checkEmail.executeQuery();
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/universitycoursemanagement" ,"universitycoursemanagement", "university");
 
-            if(emailCheck.next()) // Email already existed
+            PreparedStatement checkPass = conn.prepareStatement("SELECT email, user_name, password_hash FROM users WHERE email=?");
+            checkPass.setString(1, email);
+            ResultSet curPass = checkPass.executeQuery();
+            if(curPass.next())
             {
-                request.getSession().setAttribute("error", "Email already registered.");
-                response.sendRedirect("register.jsp");
-                return;
+                String stored_hash = curPass.getString("password_hash");
+
+                boolean isPasswordCorrect = BCrypt.checkpw(password, stored_hash);
+
+                if(isPasswordCorrect) // Logged in
+                {
+                    request.getSession().setAttribute("isLoggedIn", "1");
+                    request.getSession().setAttribute("user_id", curPass.getString("user_name"));
+                    response.sendRedirect("home.jsp");
+                    return;
+                }
+                else //Wrong password.
+                {
+                    request.getSession().setAttribute("error", "Email and password combination is incorrect!");
+                    response.sendRedirect("login.jsp");
+                    return;
+                }
             }
-            else
+            else // Credentials incorrect
             {
-                Statement st = conn.createStatement();
-
-                password_hash = BCrypt.hashpw(password, BCrypt.gensalt(15));
-                System.out.println(password_hash);
-
-                int i = st.executeUpdate("INSERT INTO users(user_name, email, phone, address, password_hash) VALUES('"+ name +"', '"+ email +"', '"+ phone +"', '"+ address +"', '"+  password_hash +"')");
-
-                System.out.println("User is registered successfully!");
+                request.getSession().setAttribute("error", "Email or password not found!");
+                response.sendRedirect("login.jsp");
+                return;
             }
         }
         catch(Exception e)
-        {
-            System.out.println("Something went wrong: "+ e); 
+        {       
+            System.out.println("Something went wrong: "+ e);       
         }
     }
 
