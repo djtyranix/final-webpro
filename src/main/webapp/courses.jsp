@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.gacha.universitycoursemanagement.Courses" %>
 <!DOCTYPE html>
 <html>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -19,6 +21,12 @@
     <body>
         <%
             String user_id = (String) session.getAttribute("user_id");
+            
+            ArrayList<Courses> list = new ArrayList<Courses>();
+            
+            list = (ArrayList<Courses>) session.getAttribute("courseList");
+            Courses courseObj = new Courses();
+            
             if (user_id == null) { response.sendRedirect("login.jsp"); }
         %>
         <nav class="navbar navbar-expand-lg navbar-dark bg-its mb-md-5">
@@ -103,51 +111,29 @@
                     session.removeAttribute("success");
                 }
                 %>
-            <h1 class="text-center">List of Courses</h1>
+            <h1 class="text-center">List of Courses Available</h1>
         </div>
         
         <div class="container mt-md-5">
             <div class="row">
-                <div class="col-md-3">
+                <%
+                    for(int i = 0; i < list.size(); i++)
+                    {
+                        courseObj = list.get(i);
+                %>
+                <div class="col-md-3 d-flex align-items-stretch">
                     <div class="card card-custom text-center">
-                        <img class="card-img-top" src="https://picsum.photos/seed/anjayani/350/200" alt="Card image cap">
+                        <img class="card-img-top" src="https://picsum.photos/seed/webpro/350/200?random=4" alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <h5 class="card-title"><%= courseObj.getCourseName()%></h5>
+                            <p class="card-text text-truncate"><%= courseObj.getCourseDesc()%></p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary">Learn More</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card card-custom text-center">
-                        <img class="card-img-top" src="https://picsum.photos/seed/rnjesus/350/200" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-custom text-center">
-                        <img class="card-img-top" src="https://picsum.photos/seed/sony/350/200" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-custom text-center">
-                        <img class="card-img-top" src="https://picsum.photos/seed/oppo/350/200" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
+                <% } %>
             </div>
         </div>
         

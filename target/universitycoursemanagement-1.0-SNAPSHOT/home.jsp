@@ -21,6 +21,7 @@
     <body>
         <%
             String user_id = (String) session.getAttribute("user_id");
+            int count = session.getAttribute("countCourse");
             if (user_id == null) { response.sendRedirect("login.jsp"); }
         %>
         <nav class="navbar navbar-expand-lg navbar-dark bg-its mb-md-5">
@@ -39,7 +40,7 @@
                             <a class="nav-link active" href="index.jsp">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="courses.jsp">Course</a>
+                            <a class="nav-link" href="CourseController">Course</a>
                         </li>
                         <% } %>
                     </ul>
@@ -110,7 +111,7 @@
                         <div Class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="vertical-line container"><h1>Hello, <strong><%= user_id%></strong></h1></div>
+                                    <div class="vertical-line container"><h1 style="margin-bottom: 0;">Hello, <strong><%= user_id%></strong></h1></div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="vertical-line container">
@@ -125,7 +126,7 @@
                                 <div class="col-md-3">
                                     <div class="container">
                                         <div style="text-align: center; line-height: 0;">
-                                            <h2>50</h2>
+                                            <h2><%= count%></h2>
                                         </div>
                                         <div style="text-align: center; line-height: 0;">
                                             <p class="card-text">Available Course</p>

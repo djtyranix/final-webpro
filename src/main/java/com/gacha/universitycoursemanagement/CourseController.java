@@ -6,21 +6,20 @@
 package com.gacha.universitycoursemanagement;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.sql.*;
-import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author micha
  */
-@WebServlet(name = "RegisterController", urlPatterns = {"/RegisterController"})
-public class RegisterController extends HttpServlet {
+@WebServlet(name = "CourseController", urlPatterns = {"/CourseController"})
+public class CourseController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,45 +33,37 @@ public class RegisterController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try
-        {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String name = request.getParameter("name");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
-            String password_hash;
-
+        {   
+            ArrayList<Courses> courseResult = new ArrayList<>();
+            
             Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/universitycoursemanagement?" + "user=universitycoursemanagement&password=university");
-            PreparedStatement checkEmail = conn.prepareStatement("SELECT email FROM users WHERE email=?");
-            checkEmail.setString(1, email);
-            ResultSet emailCheck = checkEmail.executeQuery();
-
-            if(emailCheck.next()) // Email already existed
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/universitycoursemanagement" ,"universitycoursemanagement", "university");
+            
+            PreparedStatement course = conn.prepareStatement("SELECT * FROM courses");
+            ResultSet courseList = course.executeQuery();
+            
+            while(courseList.next())
             {
-                request.getSession().setAttribute("error", "Email already registered.");
-                response.sendRedirect("register.jsp");
-                return;
+                Courses courses = new Courses(courseList.getInt("course_id"), courseList.getString("course_name"), courseList.getString("course_desc"));
+                courseResult.add(courses);
             }
-            else
-            {
-                Statement st = conn.createStatement();
-
-                password_hash = BCrypt.hashpw(password, BCrypt.gensalt(15));
-                System.out.println(password_hash);
-
-                int i = st.executeUpdate("INSERT INTO users(user_name, email, phone, address, password_hash) VALUES('"+ name +"', '"+ email +"', '"+ phone +"', '"+ address +"', '"+  password_hash +"')");
-
-                request.getSession().setAttribute("success", "Successfully registered. Please login now.");
-                response.sendRedirect("login.jsp");
-                return;
-            }
+      
+            int count_course = courseResult.size();
+            
+            request.getSession().setAttribute("countCourse", count_course);
+            request.getSession().setAttribute("courseList", courseResult);
+            response.sendRedirect("courses.jsp");
+            return;
         }
         catch(Exception e)
         {
             request.getSession().setAttribute("error", "Something went wrong: "+ e);
-            response.sendRedirect("register.jsp");
+            response.sendRedirect("home.jsp");
             return;
+        }
+        finally
+        {
+            
         }
     }
 
