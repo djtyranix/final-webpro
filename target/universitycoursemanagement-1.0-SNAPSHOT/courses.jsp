@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.gacha.universitycoursemanagement.Courses" %>
 <!DOCTYPE html>
 <html>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,11 +15,18 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link rel="stylesheet" href="./css/style.css"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         
         <title>Courses | Smart Learn System</title>
     <body>
         <%
             String user_id = (String) session.getAttribute("user_id");
+            
+            ArrayList<Courses> list = new ArrayList<Courses>();
+            
+            list = (ArrayList<Courses>) session.getAttribute("courseList");
+            Courses courseObj = new Courses();
+            
             if (user_id == null) { response.sendRedirect("login.jsp"); }
         %>
         <nav class="navbar navbar-expand-lg navbar-dark bg-its mb-md-5">
@@ -59,7 +68,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <%= user_id %>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu fade" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">My Profile</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="LogoutController">Logout</a>
@@ -72,55 +81,65 @@
         </nav>
         
         <div class="container mt-md-5">
-            <h1 class="text-center">List of Courses</h1>
+            <%
+                    // show errors if any exist
+                    String errMsg = (String) session.getAttribute("error");
+                    if (errMsg != null) {
+                %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error: <%= errMsg%>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <%
+                    session.removeAttribute("error");
+                }
+                %>
+                <%
+                    // show errors if any exist
+                    String successMsg = (String) session.getAttribute("success");
+                    if (successMsg != null) {
+                %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= successMsg%>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <%
+                    session.removeAttribute("success");
+                }
+                %>
+            <h1 class="text-center">List of Courses Available</h1>
         </div>
         
         <div class="container mt-md-5">
             <div class="row">
-                <div class="col-md-3">
+                <%
+                    for(int i = 0; i < list.size(); i++)
+                    {
+                        courseObj = list.get(i);
+                %>
+                <div class="col-md-3 d-flex align-items-stretch">
                     <div class="card card-custom text-center">
-                        <img class="card-img-top" src="https://picsum.photos/seed/anjayani/350/200" alt="Card image cap">
+                        <img class="card-img-top" src="https://picsum.photos/seed/webpro/350/200?random=4" alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <h5 class="card-title"><%= courseObj.getCourseName()%></h5>
+                            <p class="card-text text-truncate"><%= courseObj.getCourseDesc()%></p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary">Learn More</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card card-custom text-center">
-                        <img class="card-img-top" src="https://picsum.photos/seed/rnjesus/350/200" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-custom text-center">
-                        <img class="card-img-top" src="https://picsum.photos/seed/sony/350/200" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-custom text-center">
-                        <img class="card-img-top" src="https://picsum.photos/seed/oppo/350/200" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
+                <% } %>
             </div>
         </div>
-        <!--<h1>Hello World!</h1>-->
-                <%-- BOOTSTRAP JAVASCRIPT--%>
+        
+        <%-- BOOTSTRAP JAVASCRIPT--%>
+        <script src="./js/app.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
     </body>
 </html>

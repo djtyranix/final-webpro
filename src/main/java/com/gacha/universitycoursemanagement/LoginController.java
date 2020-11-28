@@ -7,11 +7,7 @@ package com.gacha.universitycoursemanagement;
 
 import java.io.IOException;
 import java.sql.*;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -50,9 +46,9 @@ public class LoginController extends HttpServlet {
 
                 if(isPasswordCorrect) // Logged in
                 {
-                    request.getSession().setAttribute("isLoggedIn", "1");
+                    request.getSession().setAttribute("success", "Successfully logged in.");
                     request.getSession().setAttribute("user_id", curPass.getString("user_name"));
-                    response.sendRedirect("home.jsp");
+                    request.getRequestDispatcher("HomeController").forward(request, response);
                     return;
                 }
                 else //Wrong password.
@@ -71,7 +67,15 @@ public class LoginController extends HttpServlet {
         }
         catch(Exception e)
         {       
-            System.out.println("Something went wrong: "+ e);       
+            request.getSession().setAttribute("error", "Something went wrong: "+ e);
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        finally
+        {
+            try{} catch(Exception e){}
+            try{} catch(Exception e){}
+            try{} catch(Exception e){}
         }
     }
 

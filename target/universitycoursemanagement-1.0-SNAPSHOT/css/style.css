@@ -53,7 +53,6 @@ textarea {
     border-width: 0;
     border-radius: 1rem;
     transition: all .2s;
-    min-height: 10vh;
 }
 
 .vertical-line {
@@ -64,4 +63,15 @@ textarea {
 .btn-primary {
     border-radius: .5rem !important;
     background: #013880 !important;
+}
+
+.dropdown-menu.fade {
+   display: block;
+   opacity: 0;
+   pointer-events: none;
+}
+
+.show > .dropdown-menu.fade {
+   pointer-events: auto;
+   opacity: 1;
 }
