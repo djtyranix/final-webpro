@@ -6,21 +6,18 @@
 package com.gacha.universitycoursemanagement;
 
 import java.io.IOException;
-import java.sql.*;
-import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author micha
  */
-@WebServlet(name = "RegisterController", urlPatterns = {"/RegisterController"})
-public class RegisterController extends HttpServlet {
+@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
+public class LogoutController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,43 +30,9 @@ public class RegisterController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try
-        {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String name = request.getParameter("name");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
-            String password_hash;
-
-            Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/universitycoursemanagement?" + "user=universitycoursemanagement&password=university");
-            PreparedStatement checkEmail = conn.prepareStatement("SELECT email FROM users WHERE email=?");
-            checkEmail.setString(1, email);
-            ResultSet emailCheck = checkEmail.executeQuery();
-
-            if(emailCheck.next()) // Email already existed
-            {
-                request.getSession().setAttribute("error", "Email already registered.");
-                response.sendRedirect("register.jsp");
-                return;
-            }
-            else
-            {
-                Statement st = conn.createStatement();
-
-                password_hash = BCrypt.hashpw(password, BCrypt.gensalt(15));
-                System.out.println(password_hash);
-
-                int i = st.executeUpdate("INSERT INTO users(user_name, email, phone, address, password_hash) VALUES('"+ name +"', '"+ email +"', '"+ phone +"', '"+ address +"', '"+  password_hash +"')");
-
-                System.out.println("User is registered successfully!");
-            }
-        }
-        catch(Exception e)
-        {
-            System.out.println("Something went wrong: "+ e); 
-        }
+        request.getSession().invalidate();
+        response.sendRedirect("login.jsp");
+        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
