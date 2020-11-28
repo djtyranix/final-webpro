@@ -21,7 +21,7 @@
     <body>
         <%
             String user_id = (String) session.getAttribute("user_id");
-            int count = session.getAttribute("countCourse");
+            String count = (String) session.getAttribute("countCourse").toString();
             if (user_id == null) { response.sendRedirect("login.jsp"); }
         %>
         <nav class="navbar navbar-expand-lg navbar-dark bg-its mb-md-5">

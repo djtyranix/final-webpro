@@ -41,14 +41,17 @@ public class HomeController extends HttpServlet {
 
                         PreparedStatement course = conn.prepareStatement("SELECT * FROM courses");
                         ResultSet courseList = course.executeQuery();
-
+                        
+                        int count = 0;
+                        
                         while(courseList.next())
                         {
                             Courses courses = new Courses(courseList.getInt("course_id"), courseList.getString("course_name"), courseList.getString("course_desc"));
                             courseResult.add(courses);
+                            count++;
                         }
-
-                        request.getSession().setAttribute("countCourse", courseResult.size());
+                       
+                        request.getSession().setAttribute("countCourse", count);
                         request.getSession().setAttribute("courseList", courseResult);
                         response.sendRedirect("home.jsp");
                         return;
@@ -60,7 +63,6 @@ public class HomeController extends HttpServlet {
                         return;
                     }
         }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
