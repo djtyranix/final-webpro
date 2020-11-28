@@ -53,7 +53,7 @@
                             <h4 class="m-2">Login</h4>
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form action="loginControl.jsp" method="POST">
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" required maxlength="256">

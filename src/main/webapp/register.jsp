@@ -52,7 +52,7 @@
                             <h4 class="m-2">Register</h4>
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form action="RegisterController" method="POST">
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" required maxlength="256">
@@ -62,8 +62,8 @@
                                     <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required maxlength="256">
                                 </div>
                                 <div class="form-group">
-                                    <label for="password">Confirm Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password again" required maxlength="256">
+                                    <label for="passwordconfirm">Confirm Password</label>
+                                    <input type="password" class="form-control" id="passwordconfirm" name="passwordconfirm" placeholder="Enter your password again" required maxlength="256">
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Full Name</label>
