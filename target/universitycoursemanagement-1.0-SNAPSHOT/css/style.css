@@ -65,3 +65,14 @@ textarea {
     border-radius: .5rem !important;
     background: #013880 !important;
 }
+
+.dropdown-menu.fade {
+   display: block;
+   opacity: 0;
+   pointer-events: none;
+}
+
+.show > .dropdown-menu.fade {
+   pointer-events: auto;
+   opacity: 1;
+}
